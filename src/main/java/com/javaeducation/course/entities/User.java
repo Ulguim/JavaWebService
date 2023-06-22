@@ -2,10 +2,27 @@ package com.javaeducation.course.entities;
 
 import java.io.Serializable;
 
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 // Serializable é uma interface que diz que os objetos dessa classe podem ser convertidos em bytes para serem gravados em arquivos, etc.
-public class User  implements Serializable{
+@Entity
+// @Entity é uma anotação que diz que essa classe é uma entidade do banco de dados
+@Table(name = "tb_user")
+// @Table é uma anotação que diz que essa classe é uma tabela do banco de dados
+public class User implements Serializable{
     // Numero de serie padrão para objetos serializaveis
+    public User(){
+        super();
+        }
     private static final long serialVersionUID = 1L;
+    @Id
+    // generateValue diz que o id é auto incrementado
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
