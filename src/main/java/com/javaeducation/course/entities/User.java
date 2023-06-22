@@ -1,12 +1,14 @@
 package com.javaeducation.course.entities;
 
 import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 // Serializable é uma interface que diz que os objetos dessa classe podem ser convertidos em bytes para serem gravados em arquivos, etc.
@@ -28,6 +30,9 @@ public class User implements Serializable{
     private String email;
     private String phone;
     private String password;
+    // mappedBy é uma anotação que diz que o atributo orders é o mesmo que está mapeado na classe Orders
+    @OneToMany(mappedBy = "client")
+    private List <Orders> orders = new ArrayList<Orders>();
 
     // Ao usar framework ORM, é necessário criar um construtor vazio
     public User(Long id, String name, String email, String phone, String password) {
@@ -70,6 +75,9 @@ public class User implements Serializable{
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public List<Orders> getOrders() {
+        return this.orders;
     }
 
     @Override
