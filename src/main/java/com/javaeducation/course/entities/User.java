@@ -20,7 +20,8 @@ public class User implements Serializable{
     // Numero de serie padrão para objetos serializaveis
     public User(){
         super();
-        }
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     // generateValue diz que o id é auto incrementado
