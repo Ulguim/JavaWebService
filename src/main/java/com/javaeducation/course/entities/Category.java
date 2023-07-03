@@ -6,10 +6,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
+
+import java.util.HashSet;
+
 import java.util.Objects;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -21,18 +31,24 @@ public class Category implements Serializable{
     private Long id;
     private String name;
 
+    // @OneToMany(mappedBy = "category")
 
-      public Category(){
+    // Set para evitar repetição de categorias e hashset para garantir a ordem
+    @JsonIgnore
+    @ManyToMany(mappedBy = "categories")
+    private Set <Product> products = new HashSet<Product>();
+
+    public Category(){
         super();
     }
     
-
     public Category(Long id, String name){
         super();
         this.id = id;
         this.name = name;
     }
     
+  
 
     public Long getId() {
         return this.id;
@@ -49,6 +65,11 @@ public class Category implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
+    public Set<Product> getProducts() {
+        return this.products;
+    }
+
 
     public boolean equals(Object o) {
         if (o == this)
