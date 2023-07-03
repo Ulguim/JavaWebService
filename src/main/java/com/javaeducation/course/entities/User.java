@@ -32,7 +32,7 @@ public class User implements Serializable{
     private String password;
     // mappedBy é uma anotação que diz que o atributo orders é o mesmo que está mapeado na classe Orders
     @OneToMany(mappedBy = "client")
-    private List <Orders> orders = new ArrayList<Orders>();
+    private List <Order> orders = new ArrayList<Order>();
 
     // Ao usar framework ORM, é necessário criar um construtor vazio
     public User(Long id, String name, String email, String phone, String password) {
@@ -76,7 +76,7 @@ public class User implements Serializable{
     public void setPassword(String password) {
         this.password = password;
     }
-    public List<Orders> getOrders() {
+    public List<Order> getOrders() {
         return this.orders;
     }
 
