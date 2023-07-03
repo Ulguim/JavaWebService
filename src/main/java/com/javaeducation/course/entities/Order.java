@@ -1,8 +1,13 @@
 package com.javaeducation.course.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
+
+import java.time.Instant;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.javaeducation.course.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,29 +19,39 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_order")
-public class Orders implements Serializable{
-    public Orders(){
-        super();
-        }
+public class Order implements Serializable{
+    
 
-        private static final long serialVersionUID = 2L;
+        private static final long serialVersionUID = 1L;
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         // Relacionamento entre pedidos e clientes
+        private Long id;
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT-3")
+        private Instant moment;
+    
+        private Integer orderStatus;
+
+        @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "client_id")
         private User client;
 
-        private Long id;
-        private Date moment;
-        private OrderStatus orderStatus;
 
+    public Order(){
+        super();
+      
+    }
 
-    public Orders(Long id, Date moment, OrderStatus orderStatus){
+    public Order(Long id, Instant moment, OrderStatus orderStatus , User client){
         super();
         this.id = id;
         this.moment = moment;
-        this.orderStatus = orderStatus;
+        // this.orderStatus = orderStatus;
+        setOrderStatus(orderStatus);
+        this.client = client;
     }
     
     public Long getId() {
@@ -45,27 +60,30 @@ public class Orders implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-    public Date getMoment() {
+    public Instant getMoment() {
         return this.moment;
     }
-    public void setMoment(Date moment) {
+    public void setMoment(Instant moment) {
         this.moment = moment;
     }
     public OrderStatus getOrderStatus() {
-        return this.orderStatus;
+        return OrderStatus.valueof(this.orderStatus) ;
     }
     public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
+        // get code é um método da classe OrderStatus usado para retornar o código do enum
+        this.orderStatus = orderStatus.getCode();
     }
+    
+
 
     @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Orders)) {
+        if (!(o instanceof Order)) {
             return false;
         }
-        Orders orders = (Orders) o;
+        Order orders = (Order) o;
         return Objects.equals(id, orders.id) && Objects.equals(moment, orders.moment) && Objects.equals(orderStatus, orders.orderStatus);
     }
 
@@ -74,12 +92,4 @@ public class Orders implements Serializable{
         return Objects.hash(id, moment, orderStatus);
     }
     
-}
-enum OrderStatus {
-    WAITING_PAYMENT,
-    PAID,
-    SHIPPED,
-    DELIVERED,
-    CANCELED;
-
 }
