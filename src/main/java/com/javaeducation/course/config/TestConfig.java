@@ -11,8 +11,10 @@ import org.springframework.context.annotation.Profile;
 // CLasse auxiliar para configuração de testes
 // Será utilizada para popular o banco de dados com dados de teste
 
+import com.javaeducation.course.Repositories.CategoryRepository;
 import com.javaeducation.course.Repositories.OrderRepository;
 import com.javaeducation.course.Repositories.UserRepository;
+import com.javaeducation.course.entities.Category;
 import com.javaeducation.course.entities.Order;
 import com.javaeducation.course.entities.User;
 import com.javaeducation.course.enums.OrderStatus;
@@ -27,6 +29,7 @@ public class TestConfig implements CommandLineRunner{
     @Autowired 
     private OrderRepository orderRepository;
 
+    @Autowired CategoryRepository categoryRepository;
     
     @Override
     public void run(String... args) throws Exception {
@@ -36,8 +39,12 @@ public class TestConfig implements CommandLineRunner{
     Order order1 = new Order(null, Instant.parse("2021-09-30T19:53:07Z") , OrderStatus.PAID ,user1);
     //  Order order1 = new Order(null, Instant.parse("2021-09-30T19:53:07Z"),user1);    
     orderRepository.saveAll(Arrays.asList(order1));
+
+
+    Category category1 = new Category(null, "Cakes");
+    Category category2 = new Category(null, "candys");
+    categoryRepository.saveAll(Arrays.asList(category1,category2));
     }
 
-    
 }
  
